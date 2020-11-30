@@ -79,7 +79,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
             holder.cl_todoItem.setBackgroundResource(R.color.white);
         }
 
-
         holder.tv_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -113,11 +112,6 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
                 }
             }
         });
-        {
-
-        }
-
-
     }
 
     @Override
