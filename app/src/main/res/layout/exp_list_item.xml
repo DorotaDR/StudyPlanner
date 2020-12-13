@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorAccent">
+
+    <TextView
+        android:id="@+id/tv_time_pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="-"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_start_time"
+        app:layout_constraintStart_toEndOf="@+id/tv_start_time"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:textAllCaps="false" />
+
+    <TextView
+        android:id="@+id/tv_subjectTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Matma"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="8:20"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:textAllCaps="false" />
+
+    <TextView
+        android:id="@+id/tv_end_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="10:20"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_start_time"
+        app:layout_constraintStart_toEndOf="@+id/tv_start_time"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:textAllCaps="false" />
+
+    <TextView
+        android:id="@+id/tv_classRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="Sala 112"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintEnd_toEndOf="@+id/tv_subjectTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tv_subjectTitle" />
+</androidx.constraintlayout.widget.ConstraintLayout>

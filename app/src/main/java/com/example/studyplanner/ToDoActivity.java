@@ -2,26 +2,33 @@ package com.example.studyplanner;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.studyplanner.adapters.ToDoAdapter;
+import com.example.studyplanner.models.DatePickerFragment;
 import com.example.studyplanner.models.ToDoClass;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
-public class ToDoActivity extends AppCompatActivity {
+public class ToDoActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     private EditText et_title;
     private EditText et_subject;
@@ -39,7 +46,6 @@ public class ToDoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_to_do);
 
-
     }
 
     @Override
@@ -51,8 +57,11 @@ public class ToDoActivity extends AppCompatActivity {
         String jsonText = pref.getString("list", "");
         if (jsonText.length() > 0) {
             Type type = new TypeToken<ArrayList<ToDoClass>>() {
-            }.getType();
+                }.getType();
             todoList = gson.fromJson(jsonText, type);
+        }
+        if (todoList.size() == 0) {
+            Toast.makeText(this, "Oł jea! Brak zadań", Toast.LENGTH_SHORT).show();
         }
 
         mRecyclerView = findViewById(R.id.rec_list);
@@ -78,12 +87,19 @@ public class ToDoActivity extends AppCompatActivity {
     }
 
     public void addItem(View view) {
-        todoList.add(new ToDoClass(et_title.getText().toString(), et_subject.getText().toString(), et_date.getText().toString(), false));
-        alertDialog.cancel();
+        String title = et_title.getText().toString();
+        String subject = et_subject.getText().toString();
+        String date = et_date.getText().toString();
+        if (title.length() > 0 && subject.length() > 0 && date.length() > 0) {
+            todoList.add(new ToDoClass(title, subject, date, false));
+            alertDialog.cancel();
+            mAdapter = new ToDoAdapter(todoList);
+            mRecyclerView.setAdapter(mAdapter);
+            mAdapter.notifyDataSetChanged();
+        } else {
+            Toast.makeText(this, "Wypełnij wszystkie pola!", Toast.LENGTH_SHORT).show();
+        }
 
-        mAdapter = new ToDoAdapter(todoList);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -93,6 +109,24 @@ public class ToDoActivity extends AppCompatActivity {
         String sList = gson.toJson(todoList);
         SharedPreferences pref = getApplicationContext().getSharedPreferences("todolist", Context.MODE_PRIVATE);
         pref.edit().putString("list", sList).apply();
+    }
+
+    public void input_date_calendar(View view) {
+        DialogFragment datePicker = new DatePickerFragment();
+        datePicker.show(getSupportFragmentManager(), "date picker");
 
     }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, day);
+        String currentDateString = DateFormat.getDateInstance(DateFormat.SHORT).format(c.getTime());
+
+        et_date.setText(currentDateString);
+    }
+
+
 }
