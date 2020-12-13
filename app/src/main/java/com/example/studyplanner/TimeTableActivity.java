@@ -3,90 +3,183 @@ package com.example.studyplanner;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.Spinner;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.studyplanner.adapters.ExpandableAdapter;
 import com.example.studyplanner.models.Subject;
+import com.example.studyplanner.models.ToDoClass;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 public class TimeTableActivity extends AppCompatActivity {
 
-    ExpandableListView expandableListView;
-    ArrayList<String> listGroup;
-    HashMap<String, List<Subject>> listItemTrzy;
-    ExpandableAdapter adapter;
-    Spinner spinnerDays;
+    private ExpandableListView expandableListView;
+    private ArrayList<String> listGroup;
+    private HashMap<String, List<Subject>> listItemTrzy;
+    private ExpandableAdapter adapter;
+
+    private Spinner spinnerDays;
+    private EditText edit_subject_title;
+    private EditText edit_start_time;
+    private EditText edit_end_time;
+    private EditText edit_classroom;
+    private Button btn_addSubject_save;
 
     private AlertDialog alertDialog;
-    ArrayList<ArrayList<Subject>> subjectsDay = new ArrayList<>();
 
-        @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table);
 
-        listGroup = new ArrayList<>();
-        listGroup.add("Poniedziałek");
-        listGroup.add("Wtorek");
         listItemTrzy = new HashMap<>();
-        ArrayList<Subject> testList = new ArrayList<>();
-//        testList.add(new Subject("Nazwa1", 444, "8:20"));
-//        testList.add(new Subject("Nazwa2", 555, "9:20"));
-//        testList.add(new Subject("Nazwa3", 666, "10:20"));
-        subjectsDay.add(testList);
-        listItemTrzy.put(listGroup.get(0),subjectsDay.get(0));
-        testList = new ArrayList<>();
-        subjectsDay.add(testList);
-        listItemTrzy.put(listGroup.get(1),subjectsDay.get(1));
+
+        listGroup = new ArrayList<>();
+        String[] temp = getResources().getStringArray(R.array.week_days_array);
+        for (int i = 0; i < temp.length; i++) {
+            listGroup.add(temp[i]);
+        }
+
+        Gson gson = new Gson();
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("timeTable", Context.MODE_PRIVATE);
+        String jsonText = pref.getString("timeTable", "");
+        if (jsonText.length() > 0) {
+            Type type = new TypeToken<HashMap<String, List<Subject>>>() {
+            }.getType();
+            listItemTrzy = gson.fromJson(jsonText, type);
+        }
+
+        if (listItemTrzy.size() <= 0) {
+            for (int i = 0; i < listGroup.size(); i++) {
+                listItemTrzy.put(listGroup.get(i), new ArrayList<>());
+            }
+        }
 
         expandableListView = findViewById(R.id.expandable_listview);
         adapter = new ExpandableAdapter(this, listGroup, listItemTrzy);
         expandableListView.setAdapter(adapter);
-//        adapter.notifyDataSetChanged(); ta metoda uaktualnia liste
+
+
     }
-
-
-
-
 
 
     public void addSubject(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         ViewGroup viewGroup = findViewById(android.R.id.content);
-
-
         View dialogView = LayoutInflater.from(view.getContext()).inflate(R.layout.dialog_add_subject, viewGroup, false);
         builder.setView(dialogView);
         alertDialog = builder.create();
         alertDialog.show();
-
         setupSpinner();
     }
 
-    private void setupSpinner(){
-        spinnerDays=  alertDialog.findViewById(R.id.spinnerDays);
+    private void setupSpinner() {
+        spinnerDays = alertDialog.findViewById(R.id.spinnerDays);
+        edit_subject_title = alertDialog.findViewById(R.id.edit_subject_title);
+        edit_start_time = alertDialog.findViewById(R.id.edit_start_time);
+        edit_end_time = alertDialog.findViewById(R.id.edit_end_time);
+        edit_classroom = alertDialog.findViewById(R.id.edit_classroom);
+        btn_addSubject_save = alertDialog.findViewById(R.id.btn_addSubject_save);
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, getResources()
-                .getStringArray(R.array.week_days_array));//setting the country_array to spinner
-        spinnerDays.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                       int position, long id) {
-            }
+                .getStringArray(R.array.week_days_array));
+        spinnerDays.setAdapter(adapter);
 
+        btn_addSubject_save.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
+            public void onClick(View view) {
+                String selectedDay = spinnerDays.getSelectedItem().toString();
+                String subject = edit_subject_title.getText().toString();
+                String start = edit_start_time.getText().toString();
+                String end = edit_end_time.getText().toString();
+                int room = -1;
+                if (edit_classroom.getText().toString().equals("")) {
+                    Toast.makeText(TimeTableActivity.this, "Podaj numer pokoju", Toast.LENGTH_SHORT).show();
+                } else {
+                    room = Integer.valueOf(edit_classroom.getText().toString());
+                }
+
+                if (subject.equals("") || start.equals("") || end.equals("")) {
+                    Toast.makeText(TimeTableActivity.this, "Brakuje danych", Toast.LENGTH_SHORT).show();
+                } else {
+                    listItemTrzy.get(selectedDay).add(new Subject(subject, room, start, end));
+                    Collections.sort(listItemTrzy.get(selectedDay));
+                    adapter.notifyDataSetChanged();
+                    alertDialog.cancel();
+                }
             }
         });
+
+
+        edit_start_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar c = Calendar.getInstance();
+                int mHour = c.get(Calendar.HOUR_OF_DAY);
+                int mMinute = c.get(Calendar.MINUTE);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(view.getContext(),
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                edit_start_time.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, true);
+                timePickerDialog.show();
+
+            }
+        });
+
+        edit_end_time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar c = Calendar.getInstance();
+                int mHour = c.get(Calendar.HOUR_OF_DAY);
+                int mMinute = c.get(Calendar.MINUTE);
+                TimePickerDialog timePickerDialog = new TimePickerDialog(view.getContext(),
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+                                edit_end_time.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, true);
+                timePickerDialog.show();
+            }
+        });
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Gson gson = new Gson();
+        String sList = gson.toJson(listItemTrzy);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("timeTable", Context.MODE_PRIVATE);
+        pref.edit().putString("timeTable", sList).apply();
     }
 }

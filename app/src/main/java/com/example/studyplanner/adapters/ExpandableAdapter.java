@@ -81,11 +81,16 @@ public class ExpandableAdapter extends BaseExpandableListAdapter {
 
         TextView tv_subjectTitle = convertView.findViewById(R.id.tv_subjectTitle);
         TextView tv_classRoom = convertView.findViewById(R.id.tv_classRoom);
-        TextView tv_date = convertView.findViewById(R.id.tv_date);
+        TextView tv_start_time = convertView.findViewById(R.id.tv_start_time);
+        TextView tv_end_time = convertView.findViewById(R.id.tv_end_time);
+        TextView tv_time_pause = convertView.findViewById(R.id.tv_time_pause);
+
 
         tv_subjectTitle.setText(listItem.get(listGroup.get(groupPosition)).get(childPosition).getTitle());
         tv_classRoom.setText(String.valueOf(listItem.get(listGroup.get(groupPosition)).get(childPosition).getClassRoom()));
-        tv_date.setText(listItem.get(listGroup.get(groupPosition)).get(childPosition).getHour());
+        tv_start_time.setText(listItem.get(listGroup.get(groupPosition)).get(childPosition).getStartTime());
+        tv_end_time.setText(listItem.get(listGroup.get(groupPosition)).get(childPosition).getEndTime());
+        tv_time_pause.setText("-");
         return convertView;
     }
 

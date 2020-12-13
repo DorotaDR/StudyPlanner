@@ -1,15 +1,17 @@
 package com.example.studyplanner.models;
 
-public class Subject {
+public class Subject implements Comparable<Subject> {
 
     private String title;
     private int classRoom;
-    private String hour;
+    private String startTime;
+    private String endTime;
 
-    public Subject(String title, int classRoom, String hour) {
+    public Subject(String title, int classRoom, String startTime, String endTime) {
         this.title = title;
         this.classRoom = classRoom;
-        this.hour = hour;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     public String getTitle() {
@@ -28,11 +30,32 @@ public class Subject {
         this.classRoom = classRoom;
     }
 
-    public String getHour() {
-        return hour;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setHour(String hour) {
-        this.hour = hour;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    private Integer getStartTimeInMinutes(){
+        String[] splittedTime = this.startTime.split(":");
+        Integer hour = Integer.valueOf(splittedTime[0]);
+        Integer minutes = Integer.valueOf(splittedTime[1]);
+        return hour*60+minutes;
+    }
+
+    @Override
+    public int compareTo(Subject sub) {
+        return this.getStartTimeInMinutes().compareTo(sub.getStartTimeInMinutes());
     }
 }

@@ -57,8 +57,11 @@ public class ToDoActivity extends AppCompatActivity implements DatePickerDialog.
         String jsonText = pref.getString("list", "");
         if (jsonText.length() > 0) {
             Type type = new TypeToken<ArrayList<ToDoClass>>() {
-            }.getType();
+                }.getType();
             todoList = gson.fromJson(jsonText, type);
+        }
+        if (todoList.size() == 0) {
+            Toast.makeText(this, "Oł jea! Brak zadań", Toast.LENGTH_SHORT).show();
         }
 
         mRecyclerView = findViewById(R.id.rec_list);
@@ -106,7 +109,6 @@ public class ToDoActivity extends AppCompatActivity implements DatePickerDialog.
         String sList = gson.toJson(todoList);
         SharedPreferences pref = getApplicationContext().getSharedPreferences("todolist", Context.MODE_PRIVATE);
         pref.edit().putString("list", sList).apply();
-
     }
 
     public void input_date_calendar(View view) {
