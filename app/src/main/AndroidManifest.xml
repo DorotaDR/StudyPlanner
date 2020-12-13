@@ -15,6 +15,7 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".ToDoActivity" />
         <activity android:name=".TimeTableActivity" />
+        <activity android:name=".Notifications" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
