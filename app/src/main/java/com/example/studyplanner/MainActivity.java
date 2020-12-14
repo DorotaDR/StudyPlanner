@@ -7,6 +7,7 @@ import androidx.core.app.NotificationManagerCompat;
 import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -24,8 +25,6 @@ public class MainActivity extends AppCompatActivity {
 //    @BindView(R.id.btn_todoList)
 //    Button btn_todoList;
 
-    private NotificationManagerCompat notificationManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        notificationManager = NotificationManagerCompat.from(this);
     }
 
     @OnClick(R.id.btn_timeTable)
@@ -50,17 +48,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendNotifications(View w)
     {
+        Log.v("CREATION", "aaaaaaaaaaaaaaaaaaaaa is my message");
         String title = "this is the title";
         String message = "this is the message";
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.ic_stat_name)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .build();
 
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        Log.v("CREATION", "tutaj is my message");
+
         notificationManager.notify(1, notification);
+
     }
 
 }
