@@ -11,7 +11,7 @@
         android:id="@+id/btn_timeTable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="92dp"
         android:text="Plan lekcji"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,32 +45,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <Button
-        android:id="@+id/notifications"
-        android:layout_width="183dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="56dp"
-        android:text="notifications"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_todoList"
-        app:layout_constraintVertical_bias="0.0"
-        tools:ignore="HardcodedText" />
-
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="sendNotifications"
-        android:text="CheckBox"
+        android:text="Wysyłanie powiadomień"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/notifications"
-        app:layout_constraintVertical_bias="0.095" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_todoList"
+        app:layout_constraintVertical_bias="0.17" />
     <!--android:onClick="sendNotifications"-->
 
 

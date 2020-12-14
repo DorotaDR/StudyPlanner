@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendNotifications(View w)
     {
-        Log.v("CREATION", "aaaaaaaaaaaaaaaaaaaaa is my message");
+        //Log.v("CREATION", "aaaaaaaaaaaaaaaaaaaaa is my message");
+        //pixel XL api 30
         String title = "this is the title";
         String message = "this is the message";
 
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
-        Log.v("CREATION", "tutaj is my message");
+        //Log.v("CREATION", "tutaj is my message");
 
         notificationManager.notify(1, notification);
 
