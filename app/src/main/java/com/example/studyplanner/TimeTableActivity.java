@@ -3,8 +3,11 @@ package com.example.studyplanner;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,6 +29,7 @@ import com.example.studyplanner.models.ToDoClass;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import android.util.Log;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -114,6 +118,8 @@ public class TimeTableActivity extends AppCompatActivity {
                 String selectedDay = spinnerDays.getSelectedItem().toString();
                 String subject = edit_subject_title.getText().toString();
                 String start = edit_start_time.getText().toString();
+
+                Log.v("CREATION", start);
                 String end = edit_end_time.getText().toString();
                 int room = -1;
                 if (edit_classroom.getText().toString().equals("")) {
@@ -129,7 +135,20 @@ public class TimeTableActivity extends AppCompatActivity {
                     Collections.sort(listItemTrzy.get(selectedDay));
                     adapter.notifyDataSetChanged();
                     alertDialog.cancel();
+
+                    Intent intent = new Intent(TimeTableActivity.this, Notifications.class);
+                    PendingIntent pIntent = PendingIntent.getBroadcast(TimeTableActivity.this, 0, intent, 0);
+
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+                    // notification in 5 seconds
+
+                    long timeAtButtonClick = System.currentTimeMillis();
+                    long fiveSecsInMilis = 1000* 5;
+
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, timeAtButtonClick + fiveSecsInMilis, pIntent);
                 }
+
             }
         });
 
