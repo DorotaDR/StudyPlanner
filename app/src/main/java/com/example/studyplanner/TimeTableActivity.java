@@ -39,6 +39,8 @@ import java.util.List;
 
 public class TimeTableActivity extends AppCompatActivity {
 
+    private int requestCode = 0;
+
     private ExpandableListView expandableListView;
     private ArrayList<String> listGroup;
     private HashMap<String, List<Subject>> listItemTrzy;
@@ -119,7 +121,6 @@ public class TimeTableActivity extends AppCompatActivity {
                 String subject = edit_subject_title.getText().toString();
                 String start = edit_start_time.getText().toString();
 
-                Log.v("CREATION", start);
                 String end = edit_end_time.getText().toString();
                 int room = -1;
                 if (edit_classroom.getText().toString().equals("")) {
@@ -137,16 +138,50 @@ public class TimeTableActivity extends AppCompatActivity {
                     alertDialog.cancel();
 
                     Intent intent = new Intent(TimeTableActivity.this, Notifications.class);
-                    PendingIntent pIntent = PendingIntent.getBroadcast(TimeTableActivity.this, 0, intent, 0);
+                    PendingIntent pIntent = PendingIntent.getBroadcast(TimeTableActivity.this, requestCode, intent, 0);
+                    requestCode++;
 
                     AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
                     // notification in 5 seconds
-
+                    // for presentation purposes, comment those three lines below if needed
                     long timeAtButtonClick = System.currentTimeMillis();
                     long fiveSecsInMilis = 1000* 5;
-
                     alarmManager.set(AlarmManager.RTC_WAKEUP, timeAtButtonClick + fiveSecsInMilis, pIntent);
+
+                    // setting repeating alarms 15 minutes before classes
+                    // uncomment if needed
+                    /*
+                    Calendar calendar = Calendar.getInstance();
+
+                    if(selectedDay.equals("Poniedziałek"))
+                        calendar.set(Calendar.DAY_OF_WEEK, 1);
+                    else if(selectedDay.equals("Wtorek"))
+                        calendar.set(Calendar.DAY_OF_WEEK, 2);
+                    else if(selectedDay.equals("Środa"))
+                        calendar.set(Calendar.DAY_OF_WEEK, 3);
+                    else if(selectedDay.equals("Czwartek"))
+                        calendar.set(Calendar.DAY_OF_WEEK, 4);
+                    else
+                        calendar.set(Calendar.DAY_OF_WEEK, 5);
+
+                    String[] hourAndMins = start.split(":");
+
+                    calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hourAndMins[0]));
+                    calendar.set(Calendar.MINUTE, Integer.parseInt(hourAndMins[1]));
+                    calendar.add(Calendar.MINUTE, -15);
+                    calendar.set(Calendar.SECOND, 0);
+
+                    //this condition is used for future reminder that means your reminder not fire for past time
+                    if (calendar.before(Calendar.getInstance()))
+                        calendar.add(Calendar.DATE, 7);
+
+                    long interval =  7 * 24 * 60 * 60 * 1000; //once a week
+
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), interval, pIntent);
+                    Log.d("Alarm","Alarms set for " + selectedDay + " 15 minutes before " + start);
+
+                    */
                 }
 
             }
