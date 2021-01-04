@@ -38,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ToDoActivity.class);
         startActivity(intent);
     }
+	
+	@OnClick(R.id.btn_Calendar)
+    public void timeTable_Start() {
+        Intent intent = new Intent(this, CalendarActivity.class);
+        startActivity(intent);
+    }
 
     private void createNotificationChannels()
     {
