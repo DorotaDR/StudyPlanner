@@ -17,6 +17,7 @@
         <activity android:name=".ToDoActivity" />
         <activity android:name=".TimeTableActivity" />
         <activity android:name=".NewsPageActivity" />
+        <activity android:name=".CalendarActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
