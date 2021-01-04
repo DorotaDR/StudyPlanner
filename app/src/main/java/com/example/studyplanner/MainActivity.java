@@ -1,25 +1,13 @@
 package com.example.studyplanner;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.os.Build;
-import android.util.Log;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.widget.Button;
-import android.widget.TextView;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-
-import android.app.Notification;
 
 import static com.example.studyplanner.Notifications.CHANNEL_1_ID;
 
@@ -67,4 +55,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+    @OnClick(R.id.btn_newspage)
+    public void news_Start() {
+        Intent intent = new Intent(this, NewsPageActivity.class);
+        startActivity(intent);
+    }
+
 }

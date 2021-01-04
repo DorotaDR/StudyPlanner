@@ -10,16 +10,33 @@
         android:id="@+id/btn_todoList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/rounded_button"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:text="Lista zadań"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/btn_timeTable"
-        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="@+id/btn_timeTable"
         app:layout_constraintTop_toBottomOf="@+id/btn_timeTable" />
+
+    <Button
+        android:id="@+id/btn_newspage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_button"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="Aktualności"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_todoList"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView"
@@ -35,18 +52,20 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
         android:id="@+id/btn_timeTable"
         style="@style/Widget.AppCompat.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="64dp"
         android:background="@drawable/rounded_button"
-        android:text="Plan lekcji"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
+        android:text="Plan zajęć"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
